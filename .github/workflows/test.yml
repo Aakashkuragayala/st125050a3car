@@ -1,0 +1,38 @@
+name: Run Unit Tests
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install additional dependencies
+      run: |
+        pip install numpy pandas scikit-learn mlflow streamlit  # Add any additional dependencies if needed
+
+    - name: Prepare test data
+      run: |
+        mkdir -p tests
+        # Place any required model files or other necessary files in the 'tests' directory
+        # This is an example and may need to be adapted based on your project structure
+
+    - name: Run unit tests
+      run: |
+        python -m unittest discover -s tests -p "*.py"  # Replace with 'pytest' if using pytest
